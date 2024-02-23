@@ -291,5 +291,91 @@ const Note = (props) => {
   );
 };
 ```
+Editing a Object
+```
+import React, { useEffect, useState } from "react";
 
+const App = () => {
+  const [notes, setNotes] = useState([]);
+
+  const [text, setText] = useState("");
+
+  const onChangeText = (event) => {
+    setText(event.target.value);
+  };
+
+  const addNotes = () => {
+    const newNote = {
+      name: text,
+      id: notes.length + 1,
+    };
+
+    setNotes(notes.concat(newNote));
+    console.log(notes);
+  };
+
+  const deleteNotes = (id) => {
+    console.log(id);
+    const newTodo = notes.filter((notes) => notes.id != id);
+    setNotes(newTodo);
+  };
+
+  const editNote = (id, newtext) => {
+    console.log(id);
+    console.log(newtext);
+
+    const newTodo = notes.filter((notes) => notes.id !== id); // remove the object
+
+    // create new object
+    const newObj = {
+      id: id,
+      name: newtext,
+    };
+    setNotes(newTodo.concat(newObj));
+  };
+
+  return (
+    <div>
+      <input onChange={onChangeText} placeholder="add todo"></input>
+      <button onClick={addNotes}>Add</button>
+      {notes.map((notes) => (
+        <Note note={notes} deleteNote={deleteNotes} editNote={editNote} />
+      ))}
+    </div>
+  );
+};
+
+export default App;
+
+const Note = (props) => {
+  const [editMode, setEditMode] = useState(false);
+
+  const [text, setText] = useState("");
+
+  const onChangeText = (event) => {
+    setText(event.target.value);
+  };
+
+  const editLogic = () => {
+    if (!editMode) {
+      setEditMode(true);
+    } else {
+      props.editNote(props.note.id, text);
+      setEditMode(false);
+    }
+  };
+
+  return (
+    <div>
+      {editMode ? (
+        <input value={props.note.name} onChange={onChangeText}></input>
+      ) : (
+        <span>{props.note.name}</span>
+      )}
+      <button onClick={() => props.deleteNote(props.note.id)}>Delete </button>
+      <button onClick={editLogic}>{!editMode ? "Edit" : "Add"} </button>
+    </div>
+  );
+};
+```
 
