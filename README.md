@@ -180,7 +180,7 @@ const Note = (props) => {
 
 export default App;
 
-``
+```
 ## useState Hook
 
 a. Single Variable in useState
