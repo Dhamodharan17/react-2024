@@ -240,6 +240,56 @@ const App = () => {
 
 };
 ```
+Deleting a object
+```
+import React, { useState } from "react";
 
+const App = () => {
+  const [notes, setNotes] = useState([]);
+
+  const [text, setText] = useState("");
+
+  const onChangeText = (event) => {
+    setText(event.target.value);
+  };
+
+  const addNotes = () => {
+    const newNote = {
+      name: text,
+      id: notes.length + 1,
+    };
+
+    setNotes(notes.concat(newNote));
+    console.log(notes)
+  };
+
+  const deleteNotes = (id) => {
+    console.log(id)
+    const newTodo = notes.filter((notes) => notes.id != id);
+    setNotes(newTodo);
+  };
+
+  return (
+    <div>
+      <input onChange={onChangeText} placeholder="add todo"></input>
+      <button onClick={addNotes}>Add</button>
+      {notes.map((notes) => (
+        <Note note={notes} deleteNote={deleteNotes} />
+      ))}
+    </div>
+  );
+};
+
+export default App;
+
+const Note = (props) => {
+  return (
+    <div>
+      <p>{props.note.name}</p>
+      <button onClick={() => props.deleteNote(props.note.id)}>Delete </button>
+    </div>
+  );
+};
+```
 
 
